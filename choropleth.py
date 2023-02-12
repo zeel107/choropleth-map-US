@@ -9,10 +9,14 @@ image_width = 1200
 image_height = 600
 window_geometry = '1400x600'
 image_file_name = 'chloroplath_map.png'
-button_text = ['T01', 'T09', 'T10', 'T11', 'T12', 'T13', 'T14', 'T15']
-views = ['T01', 'T09', 'T10', 'T11', 'T12', 'T13', 'T14', 'T15']
-current_views = ['T01', 'T12']
-
+button_text = ['T10', 'T12', 'T13', 'T16', 'T19', 'T23', 'T24', 'T25']
+title_text = ['Alcoholic Beverages Sales Tax', 'Insurance Premiums Sales Tax', 'Motor Fuels Sales Tax',
+              'Tobacco Products Sales Tax', 'Other Selective Sales and Gross Receipts Taxes',
+              'Hunting and Fishing License', 'Motor Vehicles License', 'Motor Vehicles Operators License']
+views = ['T10', 'T12', 'T13', 'T16', 'T19', 'T23', 'T24', 'T25']
+current_views = ['T10', 'T12']
+current_titles = ['Alcoholic Beverages Sales Tax', 'Insurance Premiums Sales Tax']
+# T10,T12,T13,T16,T19,T23,T24,T25
 class App():
 
     def __init__(self):
@@ -47,10 +51,12 @@ class App():
         print(button_num)
         if (button_num > 3):  # only the right side of the figure should be changed
             current_views[1] = views[button_num]
+            current_titles[1] = title_text[button_num]
         else:
             current_views[0] = views[button_num]
+            current_titles[0] = title_text[button_num]
 
-        fig = make_subplots(rows=1, cols=2, subplot_titles=[current_views[0], current_views[1]],
+        fig = make_subplots(rows=1, cols=2, subplot_titles=[current_titles[0], current_titles[1]],
                             specs=[[{'type': 'choropleth'}, {'type': 'choropleth'}]])
         fig.add_trace(
             go.Choropleth(locations=df['item'], z=df[current_views[0]], locationmode='USA-states',
@@ -76,9 +82,9 @@ class App():
         self.cv.pack(anchor=tk.S)
 
 GEOJSON_FILE = "USStates.geojson"
-df = pd.read_csv("taxData2021.csv")
+df = pd.read_csv("normalizedTaxData.csv")
 
-fig = make_subplots(rows=1, cols=2,subplot_titles=[current_views[0],current_views[1]],
+fig = make_subplots(rows=1, cols=2,subplot_titles=[current_titles[0],current_titles[1]],
                     specs=[[{'type':'choropleth'},{'type':'choropleth'}]])
 fig.add_trace(
     go.Choropleth(locations=df['item'], z=df[current_views[0]], locationmode='USA-states', colorbar=dict(thickness=20, x=0.46) ), row=1, col=1)
